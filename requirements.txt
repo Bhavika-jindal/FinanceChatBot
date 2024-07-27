@@ -1,4 +1,8 @@
-openai
 yfinance
-streamlit
 json
+streamlit
+openai
+pandas
+matplotlib
+seaborn
+
