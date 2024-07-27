@@ -1,5 +1,4 @@
 yfinance
-json
 streamlit
 openai
 pandas
