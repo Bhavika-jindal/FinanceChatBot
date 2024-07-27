@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1dGBkAryFYXTKviFKftMADrbIEwv1stVp
 """
 
-!pip install OpenAI
+!pip install openai
 !pip install yfinance
 !pip install streamlit
 
