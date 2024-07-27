@@ -23,7 +23,7 @@ import json
 openai_api_key = os.getenv("OPENAI_API_KEY")
 
 if openai_api_key is None:
-    st.error("No API key found. Please set the OPENAI_API_KEY environment variable.")
+    st.error("Not found.")
 else:
     openai.api_key = openai_api_key
 
