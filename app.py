@@ -7,6 +7,8 @@ Original file is located at
     https://colab.research.google.com/drive/1dGBkAryFYXTKviFKftMADrbIEwv1stVp
 """
 
+pip install openai
+
 
 import pandas as pd
 import openai
