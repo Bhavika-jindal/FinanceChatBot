@@ -20,7 +20,12 @@ import streamlit as st
 
 import json
 
-openai.api_key = open('api_key.txt', 'r').read()
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
+if openai_api_key is None:
+    st.error("No API key found. Please set the OPENAI_API_KEY environment variable.")
+else:
+    openai.api_key = openai_api_key
 
 def get_stock_price(ticker):
     return str(yf.Ticker(ticker).history(period="1y").iloc[-1].Close)
