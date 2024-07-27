@@ -8,9 +8,6 @@ Original file is located at
 """
 
 
-!pip install yfinance
-!pip install streamlit
-
 import pandas as pd
 import openai
 import os
