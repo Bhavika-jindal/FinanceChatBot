@@ -169,8 +169,8 @@ if user_input:
     try:
         st.session_state['messages'].append({'role':'user','content':user_input})
 
-        response = openai.ChatCompletion.create(
-            model='gpt-3.5-turbo',
+        response = openai.FunctionsCompletion.create(
+            model='gpt-4-0613',
             messages=st.session_state['messages'],
             functions=functions,
             function_call='auto'
