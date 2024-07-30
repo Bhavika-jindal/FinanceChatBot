@@ -20,7 +20,7 @@ import streamlit as st
 
 import json
 
-openai_api_key = os.getenv("OPENAI_API_KEY")
+openai_api_key = "sk-proj-ON82vG9ykwZgkvTVdzl2T3BlbkFJcVAUgd0PIQxENBgCietO"
 
 if openai_api_key is None:
     st.error("Not found.")
