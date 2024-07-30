@@ -169,7 +169,7 @@ if user_input:
     try:
         st.session_state['messages'].append({'role':'user','content':user_input})
 
-        response = openai.FunctionsCompletion.create(
+        response = openai.chat.completions.create(
             model='gpt-4-0613',
             messages=st.session_state['messages'],
             functions=functions,
