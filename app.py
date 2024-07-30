@@ -7,9 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1dGBkAryFYXTKviFKftMADrbIEwv1stVp
 """
 
-
-
-
 import pandas as pd
 import openai
 import os
@@ -17,24 +14,22 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import yfinance as yf
 import streamlit as st
-
 import json
-import streamlit as st
-import os
 
 # Everything is accessible via the st.secrets dict:
 api_key = st.secrets["general"]["OPEN_AI_API"]
 openai.api_key = api_key
+
 def get_stock_price(ticker):
     return str(yf.Ticker(ticker).history(period="1y").iloc[-1].Close)
 
-def calculate_SMA(ticker,window):
+def calculate_SMA(ticker, window):
     data = yf.Ticker(ticker).history(period="1y").Close
     return str(data.rolling(window=window).mean().iloc[-1])
 
-def calculate_EMA(ticker,window):
+def calculate_EMA(ticker, window):
     data = yf.Ticker(ticker).history(period="1y").Close
-    return str(data.ewm(span=window , adjust=False).mean().iloc[-1])
+    return str(data.ewm(span=window, adjust=False).mean().iloc[-1])
 
 def calculate_RSI(ticker):
     data = yf.Ticker(ticker).history(period="1y").Close
@@ -58,7 +53,7 @@ def calculate_MACD(ticker):
 def plot_stock_price(ticker):
     data = yf.Ticker(ticker).history(period="1y").Close
     plt.figure(figsize=(10,5))
-    plt.plot(data.index, data.os.Close)
+    plt.plot(data.index, data.Close)
     plt.title(f'{ticker} Stock Price over last year')
     plt.xlabel('Date')
     plt.ylabel('Stock Price')
@@ -118,8 +113,6 @@ functions = [
         },
 
     },
-
-
     {
         'name':'calculate_RSI',
         'description':'Calculate the RSI for a given stock ticker',
@@ -134,7 +127,6 @@ functions = [
             'required':['ticker']
             },
     },
-
     {
         'name':'calculate_MACD',
         'description':'Calculate the MACD for a given stock ticker',
@@ -186,7 +178,7 @@ if user_input:
   try:
     st.session_state['messages'].append({'role':'user','content':user_input})
 
-    response = openai.ChatCompletion.create(
+    response = openai.Completion.create(
       model='gpt-3.5-turbo-0613',
       messages=st.session_state['messages'],
       functions=functions,
@@ -216,7 +208,7 @@ if user_input:
           'content':function_response
         })
 
-        second_response = openai.ChatCompletion.create(
+        second_response = openai.Completion.create(
           model='gpt-3.5-turbo-0613',
           messages=st.session_state['messages']
         )
@@ -228,4 +220,3 @@ if user_input:
 
   except Exception as e:
     raise e
-
