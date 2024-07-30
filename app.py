@@ -7,7 +7,7 @@ import yfinance as yf
 import streamlit as st
 import json
 
-# Everything is accessible via the st.secrets dict:
+# Set the OpenAI API key from Streamlit secrets
 api_key = st.secrets["general"]["OPEN_AI_API"]
 openai.api_key = api_key
 
@@ -44,7 +44,7 @@ def calculate_MACD(ticker):
 def plot_stock_price(ticker):
     data = yf.Ticker(ticker).history(period="1y").Close
     plt.figure(figsize=(10,5))
-    plt.plot(data.index, data.Close)
+    plt.plot(data.index, data)
     plt.title(f'{ticker} Stock Price over last year')
     plt.xlabel('Date')
     plt.ylabel('Stock Price')
@@ -54,108 +54,106 @@ def plot_stock_price(ticker):
 
 functions = [
     {
-        'name':'get_stock_price',
-        'description':'Get the latest stock price given the ticker symbol of a company',
-        'parameters':{
-            'type':'object',
-            'properties':{
-                'ticker':{
-                    'type':'string',
-                    'description':'The stock ticker symbol of a company (for example AAPL for Apple)'
+        'name': 'get_stock_price',
+        'description': 'Get the latest stock price given the ticker symbol of a company',
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'ticker': {
+                    'type': 'string',
+                    'description': 'The stock ticker symbol of a company (for example AAPL for Apple)'
                 }
             },
-            'required':['ticker']
+            'required': ['ticker']
         },
     },
     {
-        'name':'calculate_SMA',
-        'description':'Calculate the simple moving average for a given stock ticker and a window',
-        'parameters':{
-            'type':'object',
-            'properties':{
-                'ticker':{
-                    'type':'string',
-                    'description':'The stock ticker symbol of a company (for example AAPL for Apple)'
+        'name': 'calculate_SMA',
+        'description': 'Calculate the simple moving average for a given stock ticker and a window',
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'ticker': {
+                    'type': 'string',
+                    'description': 'The stock ticker symbol of a company (for example AAPL for Apple)'
                 },
-                'window':{
-                    'type':'integer',
-                    'description':'The number of days to calculate the SMA over'
+                'window': {
+                    'type': 'integer',
+                    'description': 'The number of days to calculate the SMA over'
                 }
             },
-            'required':['ticker','window']
+            'required': ['ticker', 'window']
         },
     },
     {
-        'name':'calculate_EMA',
-        'description':'Calculate the exponential moving average for a given stock ticker and a window',
-        'parameters':{
-            'type':'object',
-            'properties':{
-                'ticker':{
-                    'type':'string',
-                    'description':'The stock ticker symbol of a company (for example AAPL for Apple)',
+        'name': 'calculate_EMA',
+        'description': 'Calculate the exponential moving average for a given stock ticker and a window',
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'ticker': {
+                    'type': 'string',
+                    'description': 'The stock ticker symbol of a company (for example AAPL for Apple)',
                 },
-                'window':{
-                    'type':'integer',
-                    'description':'The number of days to calculate the EMA over'
+                'window': {
+                    'type': 'integer',
+                    'description': 'The number of days to calculate the EMA over'
                 }
             },
-            'required':['ticker','window']
+            'required': ['ticker', 'window']
         },
-
     },
     {
-        'name':'calculate_RSI',
-        'description':'Calculate the RSI for a given stock ticker',
-        'parameters':{
-            'type':'object',
-            'properties':{
-                'ticker':{
-                    'type':'string',
-                    'description':'The stock ticker symbol of a company (for example AAPL for Apple)'
+        'name': 'calculate_RSI',
+        'description': 'Calculate the RSI for a given stock ticker',
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'ticker': {
+                    'type': 'string',
+                    'description': 'The stock ticker symbol of a company (for example AAPL for Apple)'
                 },
             },
-            'required':['ticker']
-            },
+            'required': ['ticker']
+        },
     },
     {
-        'name':'calculate_MACD',
-        'description':'Calculate the MACD for a given stock ticker',
-        'parameters':{
-            'type':'object',
-            'properties':{
-                'ticker':{
-                    'type':'string',
-                    'description':'The stock ticker symbol of a company (for example AAPL for Apple)'
+        'name': 'calculate_MACD',
+        'description': 'Calculate the MACD for a given stock ticker',
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'ticker': {
+                    'type': 'string',
+                    'description': 'The stock ticker symbol of a company (for example AAPL for Apple)'
                 }
             },
-            'required':['ticker']
-    },
+            'required': ['ticker']
+        },
     },
     {
-        'name':'plot_stock_price',
-        'description':'Plot the stock price for the last year given ticker symbol of a company',
-        'parameters':{
-            'type':'object',
-            'properties':{
-                'ticker':{
-                    'type':'string',
-                    'description':'The stock ticker symbol of a company (for example AAPL for Apple)'
+        'name': 'plot_stock_price',
+        'description': 'Plot the stock price for the last year given ticker symbol of a company',
+        'parameters': {
+            'type': 'object',
+            'properties': {
+                'ticker': {
+                    'type': 'string',
+                    'description': 'The stock ticker symbol of a company (for example AAPL for Apple)'
                 }
             },
-            'required':['ticker']
-            }
-
+            'required': ['ticker']
+        }
     }
 ]
 
 available_functions = {
-    'get_stock_price':get_stock_price,
-    'calculate_SMA':calculate_SMA,
-    'calculate_EMA':calculate_EMA,
-    'calculate_RSI':calculate_RSI,
-    'calculate_MACD':calculate_MACD,
-    'plot_stock_price':plot_stock_price
+    'get_stock_price': get_stock_price,
+    'calculate_SMA': calculate_SMA,
+    'calculate_EMA': calculate_EMA,
+    'calculate_RSI': calculate_RSI,
+    'calculate_MACD': calculate_MACD,
+    'plot_stock_price': plot_stock_price
 }
 
 if 'messages' not in st.session_state:
@@ -167,23 +165,26 @@ user_input = st.text_input('Enter your question')
 
 if user_input:
     try:
-        st.session_state['messages'].append({'role':'user','content':user_input})
+        st.session_state['messages'].append({'role': 'user', 'content': user_input})
 
-        response = openai.chat.completions.create(
-            model='gpt-4-0613',
+        response = openai.ChatCompletion.create(
+            model='gpt-3.5-turbo',
             messages=st.session_state['messages'],
             functions=functions,
             function_call='auto'
         )
+
+        # Debug print to check the response structure
+        st.write("Response: ", response)
 
         response_message = response['choices'][0]['message']
 
         if response_message.get('function_call'):
             function_name = response_message['function_call']['name']
             function_args = json.loads(response_message['function_call']['arguments'])
-            if function_name in ['get_stock_price','calculate_RSI','calculate_MACD','plot_stock_price']:
+            if function_name in ['get_stock_price', 'calculate_RSI', 'calculate_MACD', 'plot_stock_price']:
                 args_dict = {'ticker': function_args.get('ticker')}
-            elif function_name in ['calculate_SMA','calculate_EMA']:
+            elif function_name in ['calculate_SMA', 'calculate_EMA']:
                 args_dict = {'ticker': function_args.get('ticker'), 'window': function_args.get('window')}
 
             function_to_call = available_functions[function_name]
@@ -194,9 +195,9 @@ if user_input:
             else:
                 st.session_state['messages'].append(response_message)
                 st.session_state['messages'].append({
-                    'role':'function',
-                    'name':function_name,
-                    'content':function_response
+                    'role': 'function',
+                    'name': function_name,
+                    'content': function_response
                 })
 
                 second_response = openai.ChatCompletion.create(
@@ -204,10 +205,10 @@ if user_input:
                     messages=st.session_state['messages']
                 )
                 st.text(second_response['choices'][0]['message']['content'])
-                st.session_state['messages'].append({'role':'assistant','content':second_response['choices'][0]['message']['content']})
+                st.session_state['messages'].append({'role': 'assistant', 'content': second_response['choices'][0]['message']['content']})
         else:
             st.text(response_message['content'])
-            st.session_state['messages'].append({'role':'assistant','content':response_message['content']})
+            st.session_state['messages'].append({'role': 'assistant', 'content': response_message['content']})
 
     except Exception as e:
-        raise e
+        st.error(f"An error occurred: {str(e)}")
