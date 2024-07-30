@@ -201,7 +201,7 @@ if user_input:
                 })
 
                 second_response = openai.chats.completions.create(
-                    model='gpt-3.5-turbo',
+                    model='gpt-4.0-0613',
                     messages=st.session_state['messages']
                 )
                 st.text(second_response['choices'][0]['message']['content'])
