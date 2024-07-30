@@ -174,15 +174,19 @@ if user_input:
             function_call='auto'
         )
 
-        # Debug print to check the response structure
+        # Extracting the response message properly
         response_message = response.choices[0].message
-        response_content = response_message.get('content', '')
+        if hasattr(response_message, 'content'):
+            response_content = response_message.content
+        else:
+            response_content = str(response_message)  # Handle unexpected structure
 
         st.write("Response:", response_content)
 
-        if response_message.get('function_call'):
-            function_name = response_message['function_call']['name']
-            function_args = json.loads(response_message['function_call']['arguments'])
+        if hasattr(response_message, 'function_call') and response_message.function_call:
+            function_name = response_message.function_call.get('name')
+            function_args = json.loads(response_message.function_call.get('arguments', '{}'))
+            
             if function_name in ['get_stock_price', 'calculate_RSI', 'calculate_MACD', 'plot_stock_price']:
                 args_dict = {'ticker': function_args.get('ticker')}
             elif function_name in ['calculate_SMA', 'calculate_EMA']:
@@ -205,8 +209,8 @@ if user_input:
                     model='gpt-4.0-0613',
                     messages=st.session_state['messages']
                 )
-                st.text(second_response['choices'][0]['message']['content'])
-                st.session_state['messages'].append({'role': 'assistant', 'content': second_response['choices'][0]['message']['content']})
+                st.text(second_response.choices[0].message.content)
+                st.session_state['messages'].append({'role': 'assistant', 'content': second_response.choices[0].message.content})
         else:
             st.text(response_content)
             st.session_state['messages'].append({'role': 'assistant', 'content': response_content})
