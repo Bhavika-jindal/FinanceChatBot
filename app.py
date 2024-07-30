@@ -200,7 +200,7 @@ if user_input:
                     'content': function_response
                 })
 
-                second_response = openai.ChatCompletion.create(
+                second_response = openai.chats.completions.create(
                     model='gpt-3.5-turbo',
                     messages=st.session_state['messages']
                 )
