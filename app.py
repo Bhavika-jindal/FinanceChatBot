@@ -175,8 +175,10 @@ if user_input:
         )
 
         # Debug print to check the response structure
-        response_message = response.choices[0].message.content
-        st.write("Response:", response_message)
+        response_message = response.choices[0].message
+        response_content = response_message.get('content', '')
+
+        st.write("Response:", response_content)
 
         if response_message.get('function_call'):
             function_name = response_message['function_call']['name']
@@ -199,15 +201,15 @@ if user_input:
                     'content': function_response
                 })
 
-                second_response = openai.chats.completions.create(
+                second_response = openai.chat.completions.create(
                     model='gpt-4.0-0613',
                     messages=st.session_state['messages']
                 )
                 st.text(second_response['choices'][0]['message']['content'])
                 st.session_state['messages'].append({'role': 'assistant', 'content': second_response['choices'][0]['message']['content']})
         else:
-            st.text(response_message['content'])
-            st.session_state['messages'].append({'role': 'assistant', 'content': response_message['content']})
+            st.text(response_content)
+            st.session_state['messages'].append({'role': 'assistant', 'content': response_content})
 
     except Exception as e:
         st.error(f"An error occurred: {str(e)}")
