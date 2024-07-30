@@ -175,10 +175,8 @@ if user_input:
         )
 
         # Debug print to check the response structure
-        
-        st.write("Response: ", response)
-        response_message = response['choices'][0]['message']
-        
+        response_message = response['choices'][0]['message']['content']
+        st.write("Response:", response_message)
 
         if response_message.get('function_call'):
             function_name = response_message['function_call']['name']
