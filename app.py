@@ -23,16 +23,8 @@ import streamlit as st
 import os
 
 # Everything is accessible via the st.secrets dict:
-st.write("OPENAI_API_KEY", st.secrets["OPENAI_API_KEY"])
-
-
-# And the root-level secrets are also accessible as environment variables:
-
-if OPENAI_API_KEY is None:
-    st.error("Not found.")
-else:
-    openai.api_key = OPENAI_API_KEY
-
+api_key = st.secrets["general"]["OPEN_AI_API"]
+openai.api_key = api_key
 def get_stock_price(ticker):
     return str(yf.Ticker(ticker).history(period="1y").iloc[-1].Close)
 
