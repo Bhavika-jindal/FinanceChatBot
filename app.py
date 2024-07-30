@@ -184,8 +184,9 @@ if user_input:
         st.write("Response:", response_content)
 
         if hasattr(response_message, 'function_call') and response_message.function_call:
-            function_name = response_message.function_call.get('name')
-            function_args = json.loads(response_message.function_call.get('arguments', '{}'))
+            function_name = response_message.function_call.name
+            function_args = json.loads(response_message.function_call.arguments)
+
             
             if function_name in ['get_stock_price', 'calculate_RSI', 'calculate_MACD', 'plot_stock_price']:
                 args_dict = {'ticker': function_args.get('ticker')}
