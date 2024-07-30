@@ -19,13 +19,19 @@ import yfinance as yf
 import streamlit as st
 
 import json
+import streamlit as st
+import os
 
-openai_api_key = "sk-proj-ON82vG9ykwZgkvTVdzl2T3BlbkFJcVAUgd0PIQxENBgCietO"
+# Everything is accessible via the st.secrets dict:
+st.write("OPENAI_API_KEY", st.secrets["OPENAI_API_KEY"])
 
-if openai_api_key is None:
+
+# And the root-level secrets are also accessible as environment variables:
+
+if OPENAI_API_KEY is None:
     st.error("Not found.")
 else:
-    openai.api_key = openai_api_key
+    openai.api_key = OPENAI_API_KEY
 
 def get_stock_price(ticker):
     return str(yf.Ticker(ticker).history(period="1y").iloc[-1].Close)
